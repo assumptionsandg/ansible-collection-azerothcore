@@ -27,21 +27,30 @@ The target host should have:
 
 ### General
 
-| Variable                          | Description                               |
-| --------------------------------- | ----------------------------------------- |
-| `azerothcore_docker_project_path` | Docker Compose project directory.         |
-| `azerothcore_docker_modules_path` | Directory containing AzerothCore modules. |
-| `azerothcore_docker_config_path`  | Server configuration directory.           |
-| `azerothcore_docker_assets_path`  | Client data directory.                    |
+| Variable                             | Description                                                                  |
+| ------------------------------------ | ---------------------------------------------------------------------------- |
+| `azerothcore_docker_project_path`    | Docker Compose project directory. (where upstrem compose will be copied to.) |
+| `azerothcore_docker_modules_path`    | Directory containing AzerothCore modules.                                    |
+| `azerothcore_docker_config_path`     | Server configuration directory.                                              |
+| `azerothcore_docker_assets_path`     | Client data directory.                                                       |
+| `azerothcore_docker_phpmyadmin_port` | Port where `phpmyadmin` (database web UI) will be exposed.                   |
 
-### Repositories
+### AzerothCore Compose Repository
 
 | Variable                                | Description                               |
 | --------------------------------------- | ----------------------------------------- |
 | `azerothcore_docker_repository`         | `acore-docker` repository.                |
 | `azerothcore_docker_repository_version` | Version of the `acore-docker` repository. |
-| `azerothcore_docker_builder_repository` | AzerothCore source repository.            |
-| `azerothcore_docker_builder_version`    | Version of the builder repository.        |
+| `azerothcore_docker_repository_path`    | Path where `acore-docker` will be cloned. |
+
+### Container image build
+
+| Variable                                     | Description                                    |
+| -------------------------------------------- | ---------------------------------------------- |
+| `azerothcore_docker_build_images`            | Whether to build images (default is false).    |
+| `azerothcore_docker_builder_repository`      | AzerothCore source repository.                 |
+| `azerothcore_docker_builder_version`         | Version of the builder repository.             |
+| `azerothcore_docker_builder_repository_path` | Path where `azerothcore-wotlk` will be cloned. |
 
 ### Individual Progression
 
@@ -54,13 +63,13 @@ The target host should have:
 
 ### Docker Registry
 
-| Variable                              | Description                  |
-| ------------------------------------- | ---------------------------- |
-| `azerothcore_docker_registry_enabled` | Enable the local registry.   |
-| `azerothcore_docker_registry_port`    | Registry port.               |
-| `azerothcore_docker_registry_address` | Registry address.            |
-| `azerothcore_docker_push_images`      | Push images after building.  |
-| `azerothcore_docker_image_tag`        | Image tag applied to builds. |
+| Variable                              | Description                                        |
+| ------------------------------------- | -------------------------------------------------- |
+| `azerothcore_docker_registry_enabled` | Enable the local registry.                         |
+| `azerothcore_docker_registry_port`    | Registry port.                                     |
+| `azerothcore_docker_registry_address` | Registry address.                                  |
+| `azerothcore_docker_push_images`      | Push images after building. (if build is enabled)  |
+| `azerothcore_docker_image_tag`        | Image tag applied to builds.                       |
 
 ### Database
 

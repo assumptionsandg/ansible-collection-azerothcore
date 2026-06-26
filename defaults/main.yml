@@ -4,6 +4,7 @@ azerothcore_docker_repository: https://github.com/azerothcore/acore-docker.git
 azerothcore_docker_repository_version: fe1d9a8621e48406a3e19d1db4088326fa3b464c
 azerothcore_docker_repository_path: /opt/azcore/acore-docker
 
+azerothcore_docker_build_images: false
 azerothcore_docker_builder_repository: https://github.com/azerothcore/azerothcore-wotlk.git
 azerothcore_docker_builder_version: 84a66e345b4c0acd58994c3be9617b077e710919
 azerothcore_docker_builder_repository_path: "/opt/azcore-build"
@@ -31,6 +32,7 @@ azerothcore_docker_environment:
   DOCKER_CLIENT_DATA_FOLDER: "{{ azerothcore_docker_assets_path }}"
   DOCKER_DB_ROOT_PASSWORD: "{{ azerothcore_docker_db_pwd }}"
 
+azerothcore_docker_phpmyadmin_port: "8080"
 azerothcore_docker_compose_overrides:
   services:
     ac-db-import:
