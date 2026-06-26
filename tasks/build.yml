@@ -1,0 +1,51 @@
+---
+
+- name: Clone builder repository
+  ansible.builtin.git:
+    repo: "{{ azerothcore_docker_builder_repository }}"
+    version: "{{ azerothcore_docker_builder_version }}"
+    dest: "{{ azerothcore_docker_builder_repository_path }}"
+    force: true
+
+- name: Ensure builder module dir exists
+  ansible.builtin.file:
+    path: "{{ azerothcore_docker_builder_repository_path }}/modules/mod-individual-progression"
+    state: directory
+  when: azerothcore_enable_progression
+
+- name: Copy module into builder context
+  ansible.builtin.shell: |
+    rsync -a --delete
+    {{ azerothcore_docker_modules_path }}/mod-individual-progression/
+    {{ azerothcore_docker_builder_repository_path }}/modules/mod-individual-progression/
+  when: azerothcore_enable_progression
+
+- name: Slurp builder compose file
+  ansible.builtin.slurp:
+    src: "{{ azerothcore_docker_builder_repository_path }}/docker-compose.yml"
+  register: builder_compose
+
+- name: Merge overrides to upstream compose
+  ansible.builtin.set_fact:
+    builder_project_definition: >-
+      {{ builder_compose.content
+        | b64decode
+        | from_yaml
+        | combine(
+            azerothcore_docker_builder_overrides,
+            recursive = True
+              )
+      }}
+
+- name: Ensure compose is written
+  ansible.builtin.copy:
+    content: "{{ builder_project_definition | to_nice_yaml(indent=2) }}"
+    dest: "{{ azerothcore_docker_builder_repository_path }}/docker-compose.yml"
+
+- name: Build custom AzerothCore images
+  ansible.builtin.shell: |
+    cd "{{ azerothcore_docker_builder_repository_path }}"
+    docker compose build --no-cache ac-worldserver ac-authserver ac-db-import
+  become: true
+  environment:
+    DOCKER_IMAGE_TAG: "{{ azerothcore_docker_image_tag }}"

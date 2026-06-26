@@ -1,3 +1,13 @@
-#SPDX-License-Identifier: MIT-0
 ---
-# tasks file for ansible-role-azerothcore-docker
+
+- include_tasks: install.yml
+
+- include_tasks: build.yml
+  when: azerothcore_docker_build_images
+
+- include_tasks: push_images.yml
+  when:
+    - azerothcore_docker_build_images
+    - azerothcore_docker_push_images
+
+- include_tasks: deploy.yml
