@@ -1,13 +1,18 @@
 ---
 
 - include_tasks: install.yml
+  when: azerothcore_docker_state in ['present', 'restarted', 'install']
 
 - include_tasks: build.yml
-  when: azerothcore_docker_build_images
+  when:
+    - azerothcore_docker_state in ['present', 'restarted', 'install']
+    - azerothcore_docker_build_images
 
 - include_tasks: push_images.yml
   when:
+    - azerothcore_docker_state in ['present', 'restarted', 'install']
     - azerothcore_docker_build_images
     - azerothcore_docker_push_images
 
 - include_tasks: deploy.yml
+  when: azerothcore_docker_state in ['present', 'restarted', 'absent', 'stopped']

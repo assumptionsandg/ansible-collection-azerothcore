@@ -11,6 +11,7 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
+    recurse: true
   loop:
     - "{{ azerothcore_docker_project_path }}"
     - "{{ azerothcore_docker_modules_path }}"
