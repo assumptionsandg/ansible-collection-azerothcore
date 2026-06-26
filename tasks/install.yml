@@ -1,21 +1,23 @@
 ---
 
+- name: Ensure directories exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    recurse: true
+    mode: "0755"
+  loop:
+    - "{{ azerothcore_docker_project_path }}"
+    - "{{ azerothcore_docker_modules_path }}"
+    - "{{ azerothcore_docker_config_path }}"
+  become: true
+
 - name: Clone upstream repository
   ansible.builtin.git:
     repo: "{{ azerothcore_docker_repository }}"
     version: "{{ azerothcore_docker_repository_version }}"
     dest: "{{ azerothcore_docker_repository_path }}"
     force: true
-
-- name: Ensure additional directories exist
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-    recurse: true
-  loop:
-    - "{{ azerothcore_docker_project_path }}"
-    - "{{ azerothcore_docker_modules_path }}"
-    - "{{ azerothcore_docker_config_path }}"
 
 - name: Clone progression repository
   ansible.builtin.git:
