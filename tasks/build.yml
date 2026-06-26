@@ -29,12 +29,12 @@
   ansible.builtin.set_fact:
     builder_project_definition: >-
       {{ builder_compose.content
-        | b64decode
-        | from_yaml
-        | combine(
-            azerothcore_docker_builder_overrides,
-            recursive = True
-              )
+      | b64decode
+      | from_yaml
+      | combine(
+      azerothcore_docker_builder_overrides,
+      recursive = True
+      )
       }}
 
 - name: Ensure compose is written
