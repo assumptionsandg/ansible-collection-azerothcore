@@ -1,0 +1,14 @@
+---
+
+azerothcore_docker_progression_repository: https://github.com/ZhengPeiRu21/mod-individual-progression.git
+azerothcore_docker_progression_version: "20260616"
+azerothcore_docker_progression_phase: 7 # vanilla phase 6
+
+azerothcore_docker_modules_default:
+  mod-individual-progression:
+    repository: "{{ azerothcore_docker_progression_repository }}"
+    version: "{{ azerothcore_docker_progression_version }}"
+
+azerothcore_docker_modules_extra:
+
+azerothcore_docker_modules: "{{ azerothcore_docker_modules_default + azerothcore_docker_modules_extra }}"

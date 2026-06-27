@@ -1,0 +1,17 @@
+---
+
+azerothcore_docker_builder_repository: https://github.com/azerothcore/azerothcore-wotlk.git
+azerothcore_docker_builder_version: 84a66e345b4c0acd58994c3be9617b077e710919
+azerothcore_docker_builder_repository_path: "{{ azerothcore_docker_path }}/build"
+
+azerothcore_docker_build_images:
+  - ac-authserver
+  - ac-worldserver
+  - ac-db-import
+
+azerothcore_docker_push_images_on_build: true
+azerothcore_docker_image_tag: "{{ ansible_facts.date_time.date }}"
+
+azerothcore_docker_registry_port: "5000"
+azerothcore_docker_registry_address: "{{ inventory_hostname }}:{{ azerothcore_docker_registry_port }}"
+azerothcore_docker_registry_version: "2"
