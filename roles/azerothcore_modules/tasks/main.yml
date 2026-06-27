@@ -4,20 +4,20 @@
   ansible.builtin.git:
     repo: "{{ item.repository }}"
     version: "{{ item.version }}"
-    dest: "{{ azerothcore_docker_modules_path }}/{{ item.key }}"
-  loop: "{{ azerothcore_docker_modules }}"
+    dest: "{{ azerothcore_install_modules_path }}/{{ item.key }}"
+  loop: "{{ azerothcore_modules_list }}"
   become: true
 
 - name: Ensure config directories exist
   ansible.builtin.file:
-    path: "{{ azerothcore_docker_config_path }}/modules"
+    path: "{{ azerothcore_install_config_path }}/modules"
     state: directory
   become: true
 
 - name: Template module configs
   ansible.builtin.template:
     src: "{{ item }}"
-    dest: "{{ azerothcore_docker_config_path }}/modules/{{ item | basename }}"
+    dest: "{{ azerothcore_install_config_path }}/modules/{{ item | basename }}"
     unsafe_writes: true
     mode: "0755" # same problem as elune-ts
   loop:

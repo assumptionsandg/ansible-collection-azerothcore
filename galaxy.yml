@@ -5,7 +5,7 @@
 namespace: assumptionsandg
 
 # The name of the collection. Has the same character restrictions as 'namespace'
-name: ansible_collection_azerothcore
+name: azerothcore
 
 # The version of the collection. Must be compatible with semantic versioning
 version: 0.2.0
@@ -25,7 +25,7 @@ description: Roles and playbooks to deploy an AzerothCore server.
 # Either a single license or a list of licenses for content inside of a collection. Ansible Galaxy currently only
 # accepts L(SPDX,https://spdx.org/licenses/) licenses. This key is mutually exclusive with 'license_file'
 license:
-  - GPL-3.0
+  - GPL-3.0-only
 
 # A list of tags you want to associate with the collection for indexing/searching. A tag name has the same character
 # requirements as 'namespace' and 'name'
@@ -38,7 +38,9 @@ tags:
 # collection label 'namespace.name'. The value is a version range
 # L(specifiers,https://python-semanticversion.readthedocs.io/en/latest/#requirement-specification). Multiple version
 # range specifiers can be set and are separated by ','
-dependencies: {}
+dependencies:
+  ansible.posix: "2.2.0"
+  community.docker: "5.2.1"
 
 # The URL of the originating SCM repository
 repository: http://github.com/assumptionsandg/ansible-collection-azerothcore

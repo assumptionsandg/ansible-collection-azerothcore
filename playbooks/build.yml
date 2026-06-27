@@ -1,0 +1,8 @@
+---
+
+- name: Deploy AzerothCore
+  hosts: azerothcore
+  roles:
+    - assumptionsandg.azerothcore.azerothcore_install
+    - assumptionsandg.azerothcore.azerothcore_modules
+    - assumptionsandg.azerothcore.azerothcore_build

@@ -1,0 +1,18 @@
+---
+
+azerothcore_build_repository: https://github.com/azerothcore/azerothcore-wotlk.git
+azerothcore_build_version: 84a66e345b4c0acd58994c3be9617b077e710919
+azerothcore_build_repository_path: "{{ azerothcore_install_path }}/build"
+
+azerothcore_build_images:
+  - ac-authserver
+  - ac-worldserver
+  - ac-db-import
+
+azerothcore_build_push_images: true
+azerothcore_build_image_tag: "{{ ansible_facts.date_time.date }}"
+
+azerothcore_build_registry_port: "5000"
+azerothcore_build_registry_address: "{{ inventory_hostname }}:{{ azerothcore_build_registry_port }}"
+
+azerothcore_build_compose_overrides:

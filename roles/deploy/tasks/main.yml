@@ -1,9 +1,0 @@
----
-
-- name: Deploy private server
-  community.docker.docker_compose_v2:
-    project_src: "{{ azerothcore_docker_path }}"
-    state: "{{ azerothcore_docker_state }}"
-    wait: true
-  environment: "{{ azerothcore_docker_environment }}"
-  become: true
