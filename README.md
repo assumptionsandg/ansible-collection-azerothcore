@@ -38,7 +38,7 @@ Prepares the AzerothCore Docker project. This role clones the upstream
 `acore-docker` repository, creates the required directory structure, and writes
 the generated Docker Compose configuration.
 
-#### Key Variables
+#### Variables
 
 | Variable                                         | Description                                                       |
 | ------------------------------------------------ | ----------------------------------------------------------------- |
@@ -58,21 +58,21 @@ the generated Docker Compose configuration.
 Manages AzerothCore modules, including optional support for the Individual
 Progression module.
 
-#### Key Variables
+#### Variables
 
-| Variable                                     | Description                            |
-| -------------------------------------------- | -------------------------------------- |
-| `azerothcore_docker_progression_enabled`     | Enable Individual Progression support. |
-| `azerothcore_modules_progression_repository` | Progression module repository.         |
-| `azerothcore_modules_progression_version`    | Progression module version/ref.        |
-| `azerothcore_modules_progression_phase`      | Progression phase to configure.        |
+| Variable                                      | Description                            |
+| --------------------------------------------- | -------------------------------------- |
+| `azerothcore_modules_progression_enabled`     | Enable Individual Progression support. |
+| `azerothcore_modules_progression_repository`  | Progression module repository.         |
+| `azerothcore_modules_progression_version`     | Progression module version/ref.        |
+| `azerothcore_modules_progression_phase`       | Progression phase to configure.        |
 
 ### `azerothcore_build`
 
 Builds custom AzerothCore Docker images and optionally pushes them to a Docker
 registry.
 
-#### Key Variables
+#### Variables
 
 | Variable                              | Description                                                       |
 | ------------------------------------- | ----------------------------------------------------------------- |
