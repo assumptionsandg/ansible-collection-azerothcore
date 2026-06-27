@@ -1,4 +1,4 @@
-# Ansible Role AzerothCore Docker
+# Ansible Collection AzerothCore
 
 Deploys an [AzerothCore](https://www.azerothcore.org/) Docker environment using the official `acore-docker` project. The role automates cloning the required repositories, building custom server images, deploying the Docker Compose stack, and optionally integrating the Individual Progression module.
 
@@ -31,57 +31,57 @@ The target host should have:
 | Variable                             | Description                                                                                                                                       |
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `azerothcore_docker_project_path`    | Docker Compose project directory. (where upstrem compose will be copied to.)                                                                      |
-| `azerothcore_docker_modules_path`    | Directory containing AzerothCore modules.                                                                                                         |
-| `azerothcore_docker_config_path`     | Server configuration directory.                                                                                                                   |
-| `azerothcore_docker_assets_path`     | Client data directory.                                                                                                                            |
-| `azerothcore_docker_phpmyadmin_port` | Port where phpmyadmin (database web UI) will be exposed.                                                                                          |
-| `azerothcore_docker_state`           | Desired Compose state. Set to `install` to run install/build only. See docs on `community.docker.docker_compose_v2` `state` option for more info. |
+| `azerothcore_install_modules_path`    | Directory containing AzerothCore modules.                                                                                                         |
+| `azerothcore_install_config_path`     | Server configuration directory.                                                                                                                   |
+| `azerothcore_install_assets_path`     | Client data directory.                                                                                                                            |
+| `azerothcore_install_phpmyadmin_port` | Port where phpmyadmin (database web UI) will be exposed.                                                                                          |
+| `azerothcore_deploy_state`           | Desired Compose state. Set to `install` to run install/build only. See docs on `community.docker.docker_compose_v2` `state` option for more info. |
 
 
 ### AzerothCore Compose Repository
 
 | Variable                                | Description                               |
 | --------------------------------------- | ----------------------------------------- |
-| `azerothcore_docker_compose_repository`         | `acore-docker` repository.                |
-| `azerothcore_docker_compose_repository_version` | Version of the `acore-docker` repository. |
-| `azerothcore_docker_compose_repository_path`    | Path where `acore-docker` will be cloned. |
+| `azerothcore_install_compose_repository`         | `acore-docker` repository.                |
+| `azerothcore_install_compose_repository_version` | Version of the `acore-docker` repository. |
+| `azerothcore_install_compose_repository_path`    | Path where `acore-docker` will be cloned. |
 
 ### Container image build
 
 | Variable                                     | Description                                    |
 | -------------------------------------------- | ---------------------------------------------- |
-| `azerothcore_docker_build_images`            | Whether to build images (default is false).    |
-| `azerothcore_docker_builder_repository`      | AzerothCore source repository.                 |
-| `azerothcore_docker_builder_version`         | Version of the builder repository.             |
-| `azerothcore_docker_builder_repository_path` | Path where `azerothcore-wotlk` will be cloned. |
+| `azerothcore_build_images`            | Whether to build images (default is false).    |
+| `azerothcore_build_repository`      | AzerothCore source repository.                 |
+| `azerothcore_build_version`         | Version of the builder repository.             |
+| `azerothcore_build_repository_path` | Path where `azerothcore-wotlk` will be cloned. |
 
 ### Individual Progression (optional Vanilla/TBC realistic progression mod)
 
 | Variable                                    | Description                     |
 | ------------------------------------------- | ------------------------------- |
 | `azerothcore_docker_progression_enabled`    | Enable progression support.     |
-| `azerothcore_docker_progression_repository` | Progression module repository.  |
-| `azerothcore_docker_progression_version`    | Module revision.                |
-| `azerothcore_docker_progression_phase`      | Progression phase to configure. |
+| `azerothcore_modules_progression_repository` | Progression module repository.  |
+| `azerothcore_modules_progression_version`    | Module revision.                |
+| `azerothcore_modules_progression_phase`      | Progression phase to configure. |
 
 ### Docker Registry configuration
 
 | Variable                                  | Description                                                            |
 | ----------------------------------------- | -----------------------------------------------------------------------|
-| `azerothcore_docker_registry_port`        | Registry port.                                                         |
-| `azerothcore_docker_registry_address`     | Registry address (assumes a registry is deployed on the ansible host). |
-| `azerothcore_docker_push_images_on_build` | Push images after building. (if build is enabled)                      |
-| `azerothcore_docker_image_tag`            | Image tag applied to builds.                                           |
+| `azerothcore_build_registry_port`        | Registry port.                                                         |
+| `azerothcore_build_registry_address`     | Registry address (assumes a registry is deployed on the ansible host). |
+| `azerothcore_build_push_images` | Push images after building. (if build is enabled)                      |
+| `azerothcore_build_image_tag`            | Image tag applied to builds.                                           |
 
 ### Database
 
 | Variable                    | Description                          |
 | --------------------------- | ------------------------------------ |
-| `azerothcore_docker_db_pwd` | MariaDB root password. **Required.** |
+| `azerothcore_install_db_pwd` | MariaDB root password. **Required.** |
 
 ### Compose Overrides
 
-`azerothcore_docker_compose_overrides` allows callers to customise the generated Docker Compose configuration.
+`azerothcore_install_compose_overrides` allows callers to customise the generated Docker Compose configuration.
 
 This can be used to:
 
@@ -91,7 +91,7 @@ This can be used to:
 * Expose additional ports.
 * Add custom volumes.
 
-`azerothcore_docker_builder_overrides` similarly allows customisation of the generated builder configuration before images are built.
+`azerothcore_build_compose_overrides` similarly allows customisation of the generated builder configuration before images are built.
 
 ## Dependencies
 
@@ -110,12 +110,12 @@ This role has no required Ansible Galaxy dependencies.
 
 ```yaml
 azerothcore_docker_progression_enabled: true
-azerothcore_docker_progression_phase: 7 # Vanilla Phase 6
+azerothcore_modules_progression_phase: 7 # Vanilla Phase 6
 
 azerothcore_docker_registry_enabled: true
-azerothcore_docker_build_images: true
+azerothcore_build_images: true
 
-azerothcore_docker_db_pwd: <password>
+azerothcore_install_db_pwd: <password>
 ```
 
 ## License

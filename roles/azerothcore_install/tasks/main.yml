@@ -1,0 +1,60 @@
+---
+
+- name: Ensure directories exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    recurse: true
+  loop:
+    - "{{ azerothcore_install_config_path }}"
+    - "{{ azerothcore_install_scripts_path }}"
+    - "{{ azerothcore_install_modules_path }}"
+  become: true
+
+- name: Clone upstream repository
+  ansible.builtin.git:
+    repo: "{{ azerothcore_install_compose_repository }}"
+    version: "{{ azerothcore_install_compose_version }}"
+    dest: "{{ azerothcore_install_compose_repository_path }}"
+    force: true
+  become: true
+
+- name: Template worldserver config
+  ansible.builtin.template:
+    src: "{{ role_path }}/files/worldserver.conf"
+    dest: "{{ azerothcore_install_config_path }}/worldserver.conf"
+    mode: "0755"
+    unsafe_writes: true
+  become: true
+
+- name: Ensure scripts are copied to project directory
+  ansible.builtin.copy:
+    src: "{{ azerothcore_install_compose_repository_path }}/scripts"
+    dest: "{{ azerothcore_install_scripts_path }}/scripts"
+    mode: "0777" # container really isn't happy with this being owned by root
+    remote_src: true
+  become: true
+
+- name: Slurp upstream compose file
+  ansible.builtin.slurp:
+    src: "{{ azerothcore_install_path }}/docker-compose.yml"
+  register: azerothcore_install_compose
+
+- name: Merge overrides to upstream compose
+  ansible.builtin.set_fact:
+    azerothcore_install_project_definition: >-
+      {{ azerothcore_install_compose.content
+      | b64decode
+      | from_yaml
+      | combine(
+      azerothcore_install_compose_overrides,
+      recursive = True
+      )
+      }}
+
+- name: Ensure compose is written
+  ansible.builtin.copy:
+    content: "{{ azerothcore_install_project_definition | to_nice_yaml(indent=2) }}"
+    dest: "{{ azerothcore_install_path }}/docker-compose.yml"
+    remote_src: true
+  become: true

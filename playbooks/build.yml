@@ -1,0 +1,11 @@
+---
+
+- name: Build AzerothCore images
+  hosts: azerothcore
+  vars:
+    azerothcore_build_images: true
+  roles:
+    - role: assumptionsandg.azerothcore.azerothcore_install
+    - role: assumptionsandg.azerothcore.azerothcore_modules
+    - role: assumptionsandg.azerothcore.azerothcore_build
+      when: azerothcore_build_images

@@ -1,0 +1,17 @@
+---
+
+- name: Ensure images are tagged
+  community.docker.docker_image_tag:
+    name: "acore/ac-wotlk-{{ item }}"
+    tag: "{{ azerothcore_build_image_tag }}"
+    repository:
+      - "{{ azerothcore_build_registry_address }}/acore/ac-wotlk-{{ item }}"
+  loop: "{{ azerothcore_build_images }}"
+  become: true
+
+- name: Ensure images are pushed
+  community.docker.docker_image_push:
+    name: "{{ azerothcore_build_registry_address }}/acore/ac-wotlk-{{ item }}"
+    tag: "{{ azerothcore_build_image_tag }}"
+  loop: "{{ azerothcore_build_images }}"
+  become: true
