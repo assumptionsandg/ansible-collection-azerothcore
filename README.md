@@ -3,7 +3,8 @@
 Deploys an [AzerothCore](https://www.azerothcore.org/) Docker environment using
 the official `acore-docker` project. The collection automates cloning the
 required repositories, building custom server images, deploying the Docker
-Compose stack, and optionally integrating the Individual Progression module.
+Compose stack, and optionally custom modules ([Indvidiual Progression](https://github.com/ZhengPeiRu21/mod-individual-progression)
+is included by default)
 
 This project has no affiliation with AzerothCore.
 
@@ -67,7 +68,7 @@ Progression module.
 | `azerothcore_modules_progression_version`     | Progression module version/ref.                       |
 | `azerothcore_modules_progression_phase`       | Progression phase to configure.                       |
 | `azerothcore_modules_default_dictionary`      | Default dictionary of modules (IP).                   |
-| `azerothcore_modules_default_dictionary`      | Extra dictionary of modules (add new modules to this).|
+| `azerothcore_modules_extra_dictionary`        | Extra dictionary of modules (add new modules to this).|
 | `azerothcore_modules_dictionary`              | Use this to override the default modules.             |
 
 ### `azerothcore_build`
