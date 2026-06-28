@@ -51,8 +51,8 @@
     cd {{ azerothcore_build_repository_path }}
     docker compose build --no-cache {{ azerothcore_build_images_list | join(' ') }}
   become: true
-  changed_when: "{{ azerothcore_build_image_info.changed }}"
-  when: "{{ azerothcore_build_image_info.changed }}"
+  changed_when: zerothcore_build_image_info.changed
+  when: azerothcore_build_image_info.changed
   environment:
     DOCKER_IMAGE_TAG: "{{ azerothcore_build_image_tag }}"
 
