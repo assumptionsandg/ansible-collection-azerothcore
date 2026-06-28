@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Body>
+    <ns1:executeCommand xmlns:ns1="urn:AC">
+      <command>{{ [
+        'account',
+        'set',
+        'gmlevel',
+        azerothcore_user_name,
+        azerothcore_user_gmlevel
+      ] | join(' ') | e }}</command>
+    </ns1:executeCommand>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
