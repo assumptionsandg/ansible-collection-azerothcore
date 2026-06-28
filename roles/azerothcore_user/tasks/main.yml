@@ -22,11 +22,11 @@
     - name: Bootstrap AzerothCore SOAP admin via worldserver console
       ansible.builtin.shell: |
         timeout --kill-after=1s 5s bash -c '
-          {
-            printf "%s\n" "account create {{ azerothcore_user_soap_username }} {{ azerothcore_user_soap_password }} {{ azerothcore_user_soap_password }}"
-            printf "%s\n" "account set gmlevel {{ azerothcore_user_soap_username }} 3 -1"
-            sleep 1
-          } | script -q /dev/null -c "docker attach acore-docker-ac-worldserver-1"
+        {
+        printf "%s\n" "account create {{ azerothcore_user_soap_username }} {{ azerothcore_user_soap_password }} {{ azerothcore_user_soap_password }}"
+        printf "%s\n" "account set gmlevel {{ azerothcore_user_soap_username }} 3 -1"
+        sleep 1
+        } | script -q /dev/null -c "docker attach acore-docker-ac-worldserver-1"
         '
       args:
         executable: /bin/bash
