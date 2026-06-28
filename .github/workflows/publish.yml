@@ -28,12 +28,12 @@ jobs:
           pip install ansible
 
       - name: Build collection
-        run: ansible-galaxy collection build --force
+        run: ansible-galaxy collection build --output-path dist
 
       - name: Publish collection
         env:
           GALAXY_API_KEY: ${{ secrets.GALAXY_API_KEY }}
         run: |
           ansible-galaxy collection publish \
-          "assumptionsandg-azerothcore-${{ github.ref_name }}.tar.gz" \
-          --api-key "${GALAXY_API_KEY}"
+            dist/assumptionsandg-azerothcore-*.tar.gz \
+            --api-key "${GALAXY_API_KEY}"
