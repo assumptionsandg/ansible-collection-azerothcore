@@ -10,3 +10,5 @@
     - role: assumptionsandg.azerothcore.azerothcore_deploy
     - role: assumptionsandg.azerothcore.azerothcore_user
       when: azerothcore_user_enable | default(true) | bool
+    - role: assumptionsandg.azerothcore.azerothcore_realmlsit
+      when: azerothcore_realmlist_enable | defautl(true) | bool
