@@ -1,9 +1,10 @@
 # azerothcore_realmlist
 
-Update realmlist.
+Configure realmlist.
 
-This role sets the default realmlsit to a desired address, local address,
-port and name. The defaults in this role match the AzerothCore defaults.
+This role configures the default `AzerothCore` realmlist entry with user
+designated addresses... aswell as supporting new realmlist entries for a
+multi worldserver deployment.
 
 See the collection README for supported variables.
 
