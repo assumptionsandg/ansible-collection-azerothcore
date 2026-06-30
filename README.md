@@ -31,6 +31,90 @@ If image pushing is enabled, a Docker registry is also required. By default,
 the collection assumes a registry is available on the Ansible control host on
 port `5000`.
 
+## Usage
+
+### Deployment
+
+Runs the complete deployment workflow:
+
+1. Prepare the `acore-docker` project.
+2. Configure AzerothCore modules.
+3. Optionally build custom images (required for module support).
+4. Deploy the Docker Compose stack.
+5. Manage users on AzerothCore (may be buggy).
+
+To download the latest version of the collection:
+
+```bash
+ansible-galaxy collection install holliefae.azerothcore
+```
+
+Alternatively define in a requirements file:
+
+```yaml
+collections:
+  - name: holliefae.azerothcore
+
+```
+Ensure your desired host is a member of thr `azerothcore` inventory group (e.g):
+
+```ini
+[azerothcore:children]
+laptop
+
+[laptop]
+localhost
+
+```
+
+To initiate the deployment run the collection playbook:
+
+```bash
+ansible-playbook holliefae.azerothcore.deploy
+```
+
+### Image build
+
+Builds custom AzerothCore images without deploying the Docker Compose stack.
+
+```bash
+ansible-playbook holliefae.azerothcore.build
+```
+
+### Post deployment
+
+Skip the full deploy pipeline to reconfigure an active server.
+
+```bash
+ansible-playbook holliefae.azerothcore.post_configure
+```
+
+
+## Example Configuration
+
+Example config for a basic deployment. (Ensure you encrypt secrets with Vault.)
+
+```yaml
+azerothcore_build_images: false
+azerothcore_install_db_pwd: "<password>"
+azerothcore_install_assets_path: "<path_to_asset_data>"
+
+azerothcore_user_bootstrap_password: "<password>"
+azerothcore_user_list:
+  user1:
+    enabled: true
+    password: "<password>"
+    gmlevel: 1
+  user2:
+    enabled: false
+    password: "<password>"
+  admin:
+    enabled: true
+    password: "<password>"
+    gmlevel: 3
+
+```
+
 ## Roles
 
 ### `azerothcore_install`
@@ -116,42 +200,6 @@ This collection depends on:
 * `ansible.mysql`
 
 Ensure `pymysql` is installed in your virtual environment.
-
-## Included Playbooks
-
-### `deploy.yml`
-
-Runs the complete deployment workflow:
-
-1. Prepare the `acore-docker` project.
-2. Configure AzerothCore modules.
-3. Optionally build custom images.
-4. Deploy the Docker Compose stack.
-
-The Docker Compose deployment state can be controlled using
-`azerothcore_deploy_state`, which defaults to `present`.
-
-```bash
-ansible-playbook holliefae.azerothcore.deploy
-```
-
-### `build.yml`
-
-Builds custom AzerothCore images without deploying the Docker Compose stack.
-
-```bash
-ansible-playbook holliefae.azerothcore.build
-```
-
-## Example Configuration
-
-Example config for a basic deployment.
-
-```yaml
-azerothcore_install_db_pwd: "<password>"
-azerothcore_install_assets_path: "<path_to_asset_data>"
-
-```
 
 ## License
 
