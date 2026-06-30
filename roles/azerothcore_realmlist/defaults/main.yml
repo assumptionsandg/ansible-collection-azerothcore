@@ -1,6 +1,16 @@
 ---
 
-azerothcore_realmlist_name: "AzerothCore"
-azerothcore_realmlist_address: "127.0.0.1"
-azerothcore_realmlist_local_address: "127.0.0.1"
-azerothcore_realmlist_port: "8085"
+azerothcore_realmlist_dictionary_default:
+  AzerothCore: # Default
+    azerothcore_realmlist_id: 1 # pkey
+    azerothcore_realmlist_address: "127.0.0.1"
+    azerothcore_realmlist_local_address: "127.0.0.1"
+    azerothcore_realmlist_port: "8085"
+
+azerothcore_realmlist_dictionary_extra:
+
+azerothcore_realmlist_dictionarys: >-
+  {{
+  azerothcore_realmlist_dictionary_default
+  | combine(azerothcore_realmlist_dictionary_extra)
+  }}

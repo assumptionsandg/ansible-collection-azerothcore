@@ -1,6 +1,6 @@
 ---
 
-- name: Update realmlist
+- name: Configure realmlist
   ansible.mysql.mysql_query:
     login_host: "{{ azerothcore_install_db_address | default(ansible_facts.default_ipv4.address) }}"
     login_port: "{{ azerothcore_install_db_port | default('63306') }}"
@@ -8,11 +8,17 @@
     login_password: "{{ azerothcore_install_db_pwd }}"
     login_db: acore_auth
     query: >-
-      UPDATE realmlist
-      SET name = %s, address = %s, localAddress = %s, port = %s
-      WHERE id = 1
+      INSERT INTO realmlist (id, name, address, localAddress, port)
+      VALUES (%s, %s, %s, %s, %s)
+      ON DUPLICATE KEY UPDATE
+        name = VALUES(name),
+        address = VALUES(address),
+        localAddress = VALUES(localAddress),
+        port = VALUES(port)
     positional_args:
-      - "{{ azerothcore_realmlist_name }}"
-      - "{{ azerothcore_realmlist_address }}"
-      - "{{ azerothcore_realmlist_local_address }}"
-      - "{{ azerothcore_realmlist_port }}"
+      - "{{ item.value.id }}"
+      - "{{ item.key }}"
+      - "{{ item.value.address }}"
+      - "{{ item.value.local_address }}"
+      - "{{ item.value.port }}"
+  loop: "{{ azerothcore_realmlist_dictionary | dict2items }}"
