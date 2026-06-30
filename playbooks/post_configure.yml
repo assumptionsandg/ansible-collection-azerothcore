@@ -1,0 +1,7 @@
+---
+
+- name: AzerothCore post-deployment configuration
+  hosts: azerothcore
+  roles:
+    - role: holliefae.azerothcore.azerothcore_user
+      when: azerothcore_user_enable | default(true) | bool

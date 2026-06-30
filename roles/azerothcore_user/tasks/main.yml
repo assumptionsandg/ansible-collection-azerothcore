@@ -1,0 +1,9 @@
+---
+
+- name: Ensure the bootstrap user is created
+  ansible.builtin.include_tasks: "{{ role_path }}/tasks/bootstrap_user.yml"
+  when: azerothcore_user_enable_bootstrap | bool
+
+- name: Ensure users are created
+  ansible.builtin.include_tasks: "{{ role_path }}/tasks/create_user.yml"
+  loop: "{{ azerothcore_user_list | dict2items }}"

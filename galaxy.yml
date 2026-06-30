@@ -41,6 +41,7 @@ tags:
 dependencies:
   ansible.posix: "2.2.0"
   community.docker: "5.2.1"
+  ansible.mysql: "5.0.1"
 
 # The URL of the originating SCM repository
 repository: http://github.com/holliefae/ansible-collection-azerothcore
