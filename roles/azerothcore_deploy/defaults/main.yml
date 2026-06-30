@@ -1,3 +1,4 @@
 ---
 
 azerothcore_deploy_state: present
+azerothcore_deploy_rebuild: auto

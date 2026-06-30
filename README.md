@@ -4,7 +4,7 @@ Deploys an [AzerothCore](https://www.azerothcore.org/) Docker environment using
 the official `acore-docker` project. The collection automates cloning the
 required repositories, building custom server images, deploying the Docker
 Compose stack, and optionally custom modules ([Indvidiual Progression](https://github.com/ZhengPeiRu21/mod-individual-progression)
-is included by default)
+is included by default).
 
 This project has no affiliation with AzerothCore.
 
@@ -30,6 +30,90 @@ The target host should have:
 If image pushing is enabled, a Docker registry is also required. By default,
 the collection assumes a registry is available on the Ansible control host on
 port `5000`.
+
+## Usage
+
+### Deployment
+
+Runs the complete deployment workflow:
+
+1. Prepare the `acore-docker` project.
+2. Configure AzerothCore modules.
+3. Optionally build custom images (required for module support).
+4. Deploy the Docker Compose stack.
+5. Manage users on AzerothCore (may be buggy).
+
+To download the latest version of the collection:
+
+```bash
+ansible-galaxy collection install holliefae.azerothcore
+```
+
+Alternatively define in a requirements file:
+
+```yaml
+collections:
+  - name: holliefae.azerothcore
+
+```
+Ensure your desired host is a member of thr `azerothcore` inventory group (e.g):
+
+```ini
+[azerothcore:children]
+laptop
+
+[laptop]
+localhost
+
+```
+
+To initiate the deployment run the collection playbook:
+
+```bash
+ansible-playbook holliefae.azerothcore.deploy
+```
+
+### Image build
+
+Builds custom AzerothCore images without deploying the Docker Compose stack.
+
+```bash
+ansible-playbook holliefae.azerothcore.build
+```
+
+### Post deployment
+
+Skip the full deploy pipeline to reconfigure an active server.
+
+```bash
+ansible-playbook holliefae.azerothcore.post_configure
+```
+
+
+## Example Configuration
+
+Example config for a basic deployment. (Ensure you encrypt secrets with Vault).
+
+```yaml
+azerothcore_build_images: false
+azerothcore_install_db_pwd: "<password>"
+azerothcore_install_assets_path: "<path_to_asset_data>"
+
+azerothcore_user_bootstrap_password: "<password>"
+azerothcore_user_list:
+  user1:
+    enabled: true
+    password: "<password>"
+    gmlevel: 1
+  user2:
+    enabled: false
+    password: "<password>"
+  admin:
+    enabled: true
+    password: "<password>"
+    gmlevel: 3
+
+```
 
 ## Roles
 
@@ -57,13 +141,13 @@ the generated Docker Compose configuration.
 ### `azerothcore_modules`
 
 Manages AzerothCore modules, including optional support for the Individual
-Progression module.
+Progression module. (Set `azerothcore_modules_default_dictionary` to `{}`
+to disable IP).
 
 #### Variables
 
 | Variable                                      | Description                                           |
 | --------------------------------------------- | ----------------------------------------------------- |
-| `azerothcore_modules_progression_enabled`     | Enable Individual Progression support.                |
 | `azerothcore_modules_progression_repository`  | Progression module repository.                        |
 | `azerothcore_modules_progression_version`     | Progression module version/ref.                       |
 | `azerothcore_modules_progression_phase`       | Progression phase to configure.                       |
@@ -91,48 +175,42 @@ registry.
 | `azerothcore_build_compose_overrides` | Overrides applied to the generated builder Compose configuration.          |
 | `azerothcore_build_images_list`       | List of images to build (Default is worldserver, authserver and db-import) |
 
+### `azerothcore_user`
+
+Manages AzerothCore users, including support for creating users and managing GM status.
+
+#### Variables
+
+| Variable                              | Description                                         |
+| --------------------------------------| --------------------------------------------------- |
+| `azerothcore_user_list`               | Dictionary (ironically not a list) of users.        |
+| `azerothcore_user_soap_address`       | URL of the WorldServer SOAP server.                 |
+| `azerothcore_user_soap_username`      | SOAP credential used during user creation.          |
+| `azerothcore_user_soap_password`      | SOAP credential used during user creation.          |
+| `azerothcore_user_enable_bootstrap`   | Whether to enable the creation of bootstrap user.   |
+| `azerothcore_user_bootstrap_username` | Bootstrap username.                                 |
+| `azerothcore_user_bootstrap_password` | Bootstrap password. **Required**.                   |
+
+### `azerothcore_deploy`
+
+Manages AzerothCore deployment. See the [Compose Module](https://docs.ansible.com/projects/ansible/latest/collections/community/docker/docker_compose_v2_module.html) for more information.
+
+#### Variables
+
+| Variable                     | Description                                        |
+| -----------------------------| ---------------------------------------------------|
+| `azerothcore_deploy_state`   | State of the compose project. (Default 'present'). |
+| `azerothcore_deploy_rebuild` | Rebuild condition of the compose project.          |
+
 ## Dependencies
 
 This collection depends on:
 
 * `ansible.posix`
 * `community.docker`
+* `ansible.mysql`
 
-## Included Playbooks
-
-### `deploy.yml`
-
-Runs the complete deployment workflow:
-
-1. Prepare the `acore-docker` project.
-2. Configure AzerothCore modules.
-3. Optionally build custom images.
-4. Deploy the Docker Compose stack.
-
-The Docker Compose deployment state can be controlled using
-`azerothcore_deploy_state`, which defaults to `present`.
-
-```bash
-ansible-playbook assumptionsandg.azerothcore.deploy
-```
-
-### `build.yml`
-
-Builds custom AzerothCore images without deploying the Docker Compose stack.
-
-```bash
-ansible-playbook assumptionsandg.azerothcore.build
-```
-
-## Example Configuration
-
-Example config for a basic deployment.
-
-```yaml
-azerothcore_install_db_pwd: "<password>"
-azerothcore_install_assets_path: "<path_to_asset_data>"
-
-```
+Ensure `pymysql` is installed in your virtual environment.
 
 ## License
 
