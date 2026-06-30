@@ -48,10 +48,10 @@
 - name: Set fact for current gm level
   ansible.builtin.set_fact:
     azerothcore_user_current_gmlevel: >-
-      {{ 
+      {{
       azerothcore_user_gm_check.query_result[0][0].gmlevel
       if (azerothcore_user_gm_check.query_result[0] | default([]) | length > 0)
-      else -1 
+      else -1
       }}
   when: item.value.enabled | bool
 
